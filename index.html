@@ -135,15 +135,17 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 </div>
 
 <section class="card stack-card">
-<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add and view stack entries.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
-<div class="date-filter"><div><label for="stackDateFilter">View Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="clearDateFilter">All Dates</button><button type="button" class="tab" id="copyStacks">Copy</button></div>
+<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add stack entries and view date-wise fumigation details.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
+<button type="button" class="tab" id="toggleStackView" aria-expanded="false">View Fumigation Details</button>
+<div id="stackViewPanel" hidden>
+<div class="date-filter"><div><label for="stackDateFilter">Select Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="hideStackView">Hide Details</button><button type="button" class="tab" id="copyStacks">Copy</button></div>
 <div class="stack-table-wrap">
 <table class="stack-table">
 <thead><tr><th>Date</th><th>Stack</th><th>Commodity</th><th>Bags</th><th>Qty</th><th>ALP kg</th><th></th></tr></thead>
 <tbody id="stackRows"></tbody>
 </table>
 </div>
-<div id="stackSummary"></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
+<div id="stackSummary"></div></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
 </section>
 </div></section>
 <section id="delta" class="panel">
@@ -244,13 +246,16 @@ function addStackRow(){
 }
 function renderStacks(){
  const allEntries=getEntries().sort((a,b)=>b.date.localeCompare(a.date)||String(a.stackNo).localeCompare(String(b.stackNo),undefined,{numeric:true}));
- const selectedDate=$('stackDateFilter').value;const entries=selectedDate?allEntries.filter(e=>e.date===selectedDate):allEntries;$('stackRows').innerHTML='';
+ const selectedDate=$('stackDateFilter').value;const detailsOpen=!$('stackViewPanel').hidden;const entries=(detailsOpen&&selectedDate)?allEntries.filter(e=>e.date===selectedDate):[];$('stackRows').innerHTML='';
  entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;[e.date,e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.qty||0),3),fmt(Number(e.alp),4)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='text-align:center';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.cssText='padding:2px 6px;font-size:12px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
  const groups={};entries.forEach(e=>(groups[e.date]??=[]).push(e));const summary=$('stackSummary');summary.innerHTML='';
  Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),qty:a.reduce((s,x)=>s+Number(x.qty||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),total=sum(list),tablets=Math.ceil(total.alp*1000/3-1e-10);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${total.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat Qty Total',fmt(ws.qty,3)],['Rice Qty Total',fmt(rs.qty,3)],['Total Qty',fmt(total.qty,3)],['Total Bags',fmt(total.bags,0)],['Total Chemical Used',fmt(total.alp,4)+' kg'],['Tablets Used (3 gm)',fmt(tablets,0)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
- $('stackMessage').textContent=allEntries.length?(selectedDate?`${entries.length} stack(s) on ${selectedDate}.`:`${allEntries.length} stack detail(s) saved. Select a date to view that day's fumigation.`):'No stack details added.';
+ $('stackMessage').textContent=!allEntries.length?'No stack details added.':(!detailsOpen?'Stack entries saved. Tap View Fumigation Details and select a date to view.':(!selectedDate?'Select a date to view that day’s fumigation details.':(entries.length?`${entries.length} stack(s) on ${selectedDate}.`:`No fumigation entries found for ${selectedDate}.`)));
 }
-$('stackDateFilter').addEventListener('change',renderStacks);$('clearDateFilter').addEventListener('click',()=>{$('stackDateFilter').value='';renderStacks()});
+function showStackDetails(){ $('stackViewPanel').hidden=false; $('toggleStackView').hidden=true; $('toggleStackView').setAttribute('aria-expanded','true'); renderStacks(); }
+function hideStackDetails(){ $('stackViewPanel').hidden=true; $('toggleStackView').hidden=false; $('toggleStackView').setAttribute('aria-expanded','false'); renderStacks(); }
+$('toggleStackView').addEventListener('click',showStackDetails);$('hideStackView').addEventListener('click',hideStackDetails);
+$('stackDateFilter').addEventListener('change',renderStacks);
 $('addStack').addEventListener('click',addStackRow);
 $('copyStacks').addEventListener('click',()=>{const entries=getEntries().filter(e=>!$('stackDateFilter').value||e.date===$('stackDateFilter').value);if(!entries.length){$('stackMessage').textContent='No stack details available for copying.';return;}const rows=[['Date','Stack Number','Commodity','Bags','Qty','ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,e.qty||0,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
 
