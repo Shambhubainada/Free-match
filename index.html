@@ -251,7 +251,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 const $=id=>document.getElementById(id);
 const n=id=>Math.max(0,Number($(id).value)||0);
 const fmt=(v,d=3)=>Number.isFinite(v)?v.toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:0}):'—';
-const fmt3=(v)=>Number.isFinite(Number(v))?Number(v).toLocaleString('en-IN',{minimumFractionDigits:3,maximumFractionDigits:3}):'—';
+const fmt3=(v)=>{const num=Number(v);return Number.isFinite(num)?num.toFixed(3):'—'};
 function put(id,v,d=3){$(id).textContent=fmt(v,d)}
 function calcALP(){let b=n('alpBags'),l=n('alpL'),w=n('alpW');let h=Math.ceil((b*.00125)*100-1e-10)/100,vol=l*w*h,qty=vol*.00675;put('alpH',h,2);put('alpVol',vol);put('alpQty',qty,4);$('alpTabs').textContent=Math.ceil(qty*1000/3).toLocaleString('en-IN')}
 function calcDelta(){let b=n('delBags'),l=n('delL'),w=n('delW'),h=b*.00125,a=(2*h*(l+w))+(l*w),adj=a*1.1;put('delH',h,4);put('delArea',adj,3);put('delQty',adj/100*.12,4);put('delSol',adj/100*3,3)}
