@@ -24,6 +24,7 @@ input{width:100%;border:1px solid #cddbd3;border-radius:10px;padding:12px;font:i
 input:focus{border-color:var(--green2);box-shadow:0 0 0 3px #1e66541a}
 .results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:17px}
 .result{background:var(--mint);border-radius:13px;padding:13px}
+.height-result{align-self:stretch;display:flex;flex-direction:column;justify-content:center;min-width:0}
 .result small{display:block;color:#52665c;font-size:12px;font-weight:700}
 .result strong{display:block;font-size:clamp(20px,4vw,27px);color:var(--green);margin-top:3px;overflow-wrap:anywhere}
 .result em{font-style:normal;font-size:12px;color:#5b6e64}
@@ -55,8 +56,16 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 .result em{font-size:11px}
 .formula{font-size:11px;margin-top:10px;padding-top:9px}
 .note{padding:9px 11px;font-size:12px;margin-bottom:9px}
-@media(max-width:620px){header{padding:15px 13px}main{padding-left:9px;padding-right:9px}.card{padding:12px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){header{padding:15px 13px}main{padding-left:9px;padding-right:9px}.card{padding:12px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:380px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.stack-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.stack-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.stack-table-wrap{overflow-x:auto;margin-top:12px}
+.stack-table{width:100%;border-collapse:collapse;min-width:680px;text-align:left;font-size:13px}
+.stack-table th{background:#e9f4ef;color:#123b32;padding:10px 9px;white-space:nowrap}
+.stack-message{font-size:12px;color:var(--muted);margin:9px 0 0}
+@media(max-width:620px){.stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -75,11 +84,11 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 <div><label for="alpBags">Bags</label><input id="alpBags" type="number" min="0" step="1" value="17500"></div>
 <div><label for="alpL">Length (metre)</label><input id="alpL" type="number" min="0" step="any" value="9.15"></div>
 <div><label for="alpW">Breadth (metre)</label><input id="alpW" type="number" min="0" step="any" value="6.1"></div>
+<div class="result height-result"><small>Calculated height</small><strong id="alpH">—</strong><em>metre</em></div>
 </div>
 <div class="results compact-results">
 <div class="result"><small>ALP required</small><strong id="alpQty">—</strong><em>kg</em></div>
 <div class="result tablet-result"><small>ALP tablets (3 gm each)</small><strong id="alpTabs">—</strong><em>tablets · rounded up</em></div>
-<div class="result"><small>Calculated height</small><strong id="alpH">—</strong><em>metre</em></div>
 <div class="result"><small>Stack volume</small><strong id="alpVol">—</strong><em>cubic metre</em></div>
 </div>
 
@@ -91,9 +100,9 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 <div><label for="delBags">Bags</label><input id="delBags" type="number" min="0" value="3500"></div>
 <div><label for="delL">Length (metre)</label><input id="delL" type="number" min="0" step="any" value="9.1"></div>
 <div><label for="delW">Breadth (metre)</label><input id="delW" type="number" min="0" step="any" value="6.1"></div>
+<div class="result height-result"><small>Stack height</small><strong id="delH">—</strong><em>metre</em></div>
 </div>
 <div class="results">
-<div class="result"><small>Stack height</small><strong id="delH">—</strong><em>metre</em></div>
 <div class="result"><small>Surface area + 10%</small><strong id="delArea">—</strong><em>sq. metre</em></div>
 <div class="result"><small>Delta required</small><strong id="delQty">—</strong><em>kg</em></div>
 <div class="result"><small>Required solution</small><strong id="delSol">—</strong><em>litre</em></div>
@@ -107,9 +116,9 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 <div><label for="malBags">Bags</label><input id="malBags" type="number" min="0" value="2000"></div>
 <div><label for="malL">Length (metre)</label><input id="malL" type="number" min="0" step="any" value="9.1"></div>
 <div><label for="malW">Breadth (metre)</label><input id="malW" type="number" min="0" step="any" value="6.1"></div>
+<div class="result height-result"><small>Stack height</small><strong id="malH">—</strong><em>metre</em></div>
 </div>
 <div class="results">
-<div class="result"><small>Stack height</small><strong id="malH">—</strong><em>metre</em></div>
 <div class="result"><small>Surface area + 10%</small><strong id="malArea">—</strong><em>sq. metre</em></div>
 <div class="result"><small>Required solution</small><strong id="malSol">—</strong><em>litre</em></div>
 <div class="result"><small>Malathion required</small><strong id="malQty">—</strong><em>litre</em></div>
@@ -123,9 +132,9 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 <div><label for="airBags">Bags</label><input id="airBags" type="number" min="0" step="1" value="0"></div>
 <div><label for="airL">Length (metre)</label><input id="airL" type="number" min="0" step="any" value="0"></div>
 <div><label for="airW">Breadth (metre)</label><input id="airW" type="number" min="0" step="any" value="0"></div>
+<div class="result height-result"><small>Stack height</small><strong id="airH">—</strong><em>metre</em></div>
 </div>
 <div class="results">
-<div class="result"><small>Stack height</small><strong id="airH">—</strong><em>metre</em></div>
 <div class="result"><small>Stack volume</small><strong id="airVol">—</strong><em>cubic metre</em></div>
 <div class="result"><small>Required solution</small><strong id="airSol">—</strong><em>litre</em></div>
 <div class="result"><small>Malathion required</small><strong id="airQty">—</strong><em>litre</em></div>
@@ -133,6 +142,28 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 
 </div></section>
 
+<section class="card stack-card">
+<h2>Add Stack</h2>
+<p class="hint">Enter stack details and add them to the list below.</p>
+<div class="stack-grid">
+  <div><label for="stackNo">Stack Number</label><input id="stackNo" type="text" placeholder="Stack number"></div>
+  <div><label for="stackCommodity">Commodity</label><input id="stackCommodity" type="text" placeholder="Wheat / Rice"></div>
+  <div><label for="stackQty">Qty</label><input id="stackQty" type="number" min="0" step="any" placeholder="Quantity"></div>
+  <div><label for="stackBags">Bags</label><input id="stackBags" type="number" min="0" step="1" placeholder="Bags"></div>
+  <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
+</div>
+<div class="stack-actions">
+  <button type="button" class="tab active" id="addStack">+ Add Stack</button>
+  <button type="button" class="tab" id="copyStacks">Copy Details</button>
+</div>
+<div class="stack-table-wrap">
+<table class="stack-table">
+<thead><tr><th>Stack Number</th><th>Commodity</th><th>Qty</th><th>Bags</th><th>Required ALP (kg)</th><th>Action</th></tr></thead>
+<tbody id="stackRows"></tbody>
+</table>
+</div>
+<p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
+</section>
 <div class="footer">FCI Chemical Calculation · Shambhu Ta-II</div>
 </main>
 <script>
@@ -145,12 +176,16 @@ function calcDelta(){let b=n('delBags'),l=n('delL'),w=n('delW'),h=b*.00125,a=(2*
 function calcMal(){let b=n('malBags'),l=n('malL'),w=n('malW'),h=b*.00125,a=(2*h*(l+w))+(l*w),adj=a*1.1,sol=adj/100*3;put('malH',h,4);put('malArea',adj,3);put('malSol',sol,3);put('malQty',sol*.01,4)}
 function calcAir(){let b=n('airBags'),l=n('airL'),w=n('airW'),h=b*.00125,vol=l*w*h,sol=vol/270;put('airH',h,4);put('airVol',vol,3);put('airSol',sol,4);put('airQty',sol*.01,5)}
 const calculators={alp:calcALP,delta:calcDelta,malstack:calcMal,aerial:calcAir};
-document.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{let p=el.id.startsWith('alp')?'alp':el.id.startsWith('del')?'delta':el.id.startsWith('mal')?'malstack':'aerial';calculators[p]()}));
+document.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{let p=el.id.startsWith('alp')?'alp':el.id.startsWith('del')?'delta':el.id.startsWith('mal')?'malstack':'aerial';calculators[p]();if(el.id==='alpL'||el.id==='alpW'||el.id==='stackBags')updateStackALP()}));
 document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===btn.dataset.tab))}));
 
 // Stack details
 const stackFields=['stackNo','stackCommodity','stackQty','stackBags','stackChemical'];
+function requiredALP(bags){const h=Math.ceil((Math.max(0,Number(bags)||0)*.00125)*100-1e-10)/100;return n('alpL')*n('alpW')*h*.00675}
+function updateStackALP(){const bags=n('stackBags');$('stackChemical').value=bags?fmt(requiredALP(bags),4):''}
+$('stackBags').addEventListener('input',updateStackALP);
 function addStackRow(){
+  updateStackALP();
   const vals=stackFields.map(id=>$(id).value.trim());
   if(!vals.some(Boolean)){ $('stackMessage').textContent='Please enter stack details first.'; return; }
   const tr=document.createElement('tr');
@@ -159,12 +194,13 @@ function addStackRow(){
   const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.padding='4px 10px';del.addEventListener('click',()=>{tr.remove();updateStackMessage();});action.appendChild(del);tr.appendChild(action);
   $('stackRows').appendChild(tr);
   stackFields.forEach(id=>$(id).value='');
+  updateStackALP();
   updateStackMessage();
 }
 function updateStackMessage(){const count=$('stackRows').children.length;$('stackMessage').textContent=count?count+' stack detail(s) added.':'No stack details added.';}
 $('addStack').addEventListener('click',addStackRow);
 $('copyStacks').addEventListener('click',()=>{
-  const rows=[['Stack Number','Commodity','Qty','Bags','Chemical'],...Array.from($('stackRows').children).map(tr=>Array.from(tr.children).slice(0,5).map(td=>td.textContent))];
+  const rows=[['Stack Number','Commodity','Qty','Bags','Required ALP (kg)'],...Array.from($('stackRows').children).map(tr=>Array.from(tr.children).slice(0,5).map(td=>td.textContent))];
   if(rows.length===1){$('stackMessage').textContent='Add at least one stack before copying.';return;}
   const text=rows.map(r=>r.join('\t')).join('\n');
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.');}
@@ -172,5 +208,6 @@ $('copyStacks').addEventListener('click',()=>{
 });
 
 Object.values(calculators).forEach(fn=>fn());
+updateStackALP();
 </script>
 </body></html>
