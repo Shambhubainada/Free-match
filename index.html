@@ -211,7 +211,13 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
     <div><label for="stackQty">Qty</label><input id="stackQty" type="number" min="0" step="any" placeholder="Enter qty"></div>
     <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
    </div>
-   <div class="stack-actions"><button type="button" class="tab active" id="addStack">Save Stack</button><button type="button" class="tab" id="cancelStack">Cancel</button></div>
+   <div class="stack-actions">
+    <button type="button" class="tab" id="scanStackPaper">📷 Scan Paper</button>
+    <input id="stackPaperPhoto" type="file" accept="image/*" capture="environment" hidden>
+    <button type="button" class="tab active" id="addStack">Save Stack</button>
+    <button type="button" class="tab" id="cancelStack">Cancel</button>
+   </div>
+   <p id="stackScanStatus" class="stack-message" aria-live="polite">Paper ki photo lekar Stack Number, Bags, Qty aur Commodity auto-fill karein.</p>
   </div>
   <div id="stackViewPanel" role="tabpanel" hidden>
 <div class="date-filter"><div><label for="stackDateFilter">Select Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="copyStacks">Copy</button></div>
@@ -276,6 +282,42 @@ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredIns
 $('installApp').addEventListener('click',async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{alert('Chrome me shortcut banane ke liye: upar ⋮ menu kholen → Add to Home screen / Install app → Add.');}});
 if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 Object.values(calculators).forEach(fn=>fn());
+// Camera paper scan: OCR reads legible labels; review fields before saving.
+let tesseractLoader=null;
+async function loadTesseract(){
+ if(window.Tesseract)return window.Tesseract;
+ if(!tesseractLoader)tesseractLoader=new Promise((resolve,reject)=>{
+  const script=document.createElement('script');
+  script.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+  script.onload=()=>window.Tesseract?resolve(window.Tesseract):reject(new Error('OCR library load failed'));
+  script.onerror=()=>reject(new Error('Internet connection required to load paper scanner'));
+  document.head.appendChild(script);
+ });
+ return tesseractLoader;
+}
+function scanValue(text,patterns){for(const pattern of patterns){const m=text.match(pattern);if(m&&m[1])return m[1].replace(/[, ]/g,'').trim();}return '';}
+function fillFromPaper(text){
+ const joined=text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).join('\n');
+ const stack=scanValue(joined,[/(?:stack\s*(?:no\.?|number)?|stk\.?)\s*[:#=\-]?\s*([A-Z0-9][A-Z0-9\/-]*)/i]);
+ const bags=scanValue(joined,[/(?:no\.?\s*of\s*)?bags?\s*[:#=\-]?\s*([\d,]+)/i,/([\d,]+)\s*bags?\b/i]);
+ const qty=scanValue(joined,[/(?:qty|quantity)\s*[:#=\-]?\s*([\d,.]+)/i]);
+ const lower=joined.toLowerCase();
+ if(stack)$('stackNo').value=stack;
+ if(bags)$('stackBags').value=bags;
+ if(qty)$('stackQty').value=qty.replace(/,/g,'');
+ if(/\brice\b/i.test(lower))$('stackCommodity').value='Rice';else if(/\bwheat\b/i.test(lower))$('stackCommodity').value='Wheat';
+ updateStackALP();
+ const found=[stack&&'Stack Number',bags&&'Bags',qty&&'Qty',(/\brice\b|\bwheat\b/i.test(lower))&&'Commodity'].filter(Boolean);
+ $('stackScanStatus').textContent=found.length?'Photo scanned. Auto-filled: '+found.join(', ')+'. Please check the fields and tap Save Stack.':'Photo scanned, but fields could not be read clearly. Please enter details manually.';
+}
+$('scanStackPaper').addEventListener('click',()=>$('stackPaperPhoto').click());
+$('stackPaperPhoto').addEventListener('change',async e=>{
+ const photo=e.target.files&&e.target.files[0];if(!photo)return;
+ $('stackScanStatus').textContent='Reading paper photo… Please wait.';$('scanStackPaper').disabled=true;
+ try{const T=await loadTesseract();const result=await T.recognize(photo,'eng');fillFromPaper(result.data.text||'');}
+ catch(err){$('stackScanStatus').textContent='Scan nahi ho paya. Clear photo lein ya details manually enter karein. '+(err.message||'');}
+ finally{$('scanStackPaper').disabled=false;e.target.value='';}
+});
 updateStackALP();
 renderStacks();
 </script>
