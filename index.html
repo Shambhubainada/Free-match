@@ -214,10 +214,17 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
    <div class="stack-actions">
     <button type="button" class="tab" id="scanStackPaper">📷 Scan Paper</button>
     <input id="stackPaperPhoto" type="file" accept="image/*" capture="environment" hidden><button type="button" class="tab" id="chooseStackGallery">🖼 Gallery</button><input id="stackGalleryPhoto" type="file" accept="image/*" hidden>
+    <button type="button" class="tab" id="togglePasteData">📋 Paste Data</button>
     <button type="button" class="tab active" id="addStack">Save Stack</button>
     <button type="button" class="tab" id="cancelStack">Cancel</button>
    </div>
-   <p id="stackScanStatus" class="stack-message" aria-live="polite">Camera ya Gallery se paper photo chun kar multiple stacks scan karein.</p><div id="stackScanPreview" hidden></div>
+   <div id="pasteDataPanel" hidden style="margin-top:10px">
+    <label for="pasteStackData">Paste rows copied from Excel (Stack Number, Bags, Qty, Commodity)</label>
+    <textarea id="pasteStackData" rows="5" placeholder="1/15&#9;2000&#9;200&#9;Wheat&#10;2/15&#9;1800&#9;180&#9;Rice" style="width:100%;border:1px solid #cddbd3;border-radius:9px;padding:9px;font:14px/1.4 system-ui;background:#fbfdfc;color:var(--ink)"></textarea>
+    <div class="stack-actions"><button type="button" class="tab active" id="savePastedStacks">Save Pasted Stacks</button><button type="button" class="tab" id="cancelPasteData">Cancel</button></div>
+    <p class="stack-message">Har line mein Stack Number, Bags, Qty aur Commodity isi order mein paste karein. Columns tab-separated ya comma-separated ho sakte hain. Pehli header line optional hai.</p>
+   </div>
+   <p id="stackScanStatus" class="stack-message" aria-live="polite">Camera, Gallery ya Paste Data se multiple stacks add karein.</p><div id="stackScanPreview" hidden></div>
   </div>
   <div id="stackViewPanel" role="tabpanel" hidden>
 <div class="date-filter"><div><label for="stackDateFilter">Select Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="copyStacks">Copy</button></div>
@@ -275,6 +282,30 @@ function showStackDetails(){ $('stackEntryPanel').hidden=true; $('stackViewPanel
 $('addStackTab').addEventListener('click',showStackEntryTab);$('stackDetailsTab').addEventListener('click',showStackDetails);
 $('stackDateFilter').addEventListener('change',renderStacks);
 $('addStack').addEventListener('click',addStackRow);
+ $('togglePasteData').addEventListener('click',()=>{$('pasteDataPanel').hidden=!$('pasteDataPanel').hidden;if(!$('pasteDataPanel').hidden)$('pasteStackData').focus()});
+ $('cancelPasteData').addEventListener('click',()=>{$('pasteDataPanel').hidden=true;$('pasteStackData').value=''});
+ function savePastedStacks(){
+  const date=$('stackDate').value,raw=$('pasteStackData').value.trim();
+  if(!date){$('stackScanStatus').textContent='Pehle Fumigation Date select karein.';return}
+  if(!raw){$('stackScanStatus').textContent='Pehle Stack data paste karein.';return}
+  const lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),rows=[];
+  lines.forEach((line,index)=>{
+   const cols=line.includes('\t')?line.split('\t'):line.split(',');
+   const vals=cols.map(x=>x.trim().replace(/^["']|["']$/g,''));
+   if(index===0&&/stack|bags|qty|quantity|commodity/i.test(line))return;
+   if(vals.length<3)return;
+   const stack=vals[0],bags=Number(String(vals[1]).replace(/,/g,'')),qty=Number(String(vals[2]).replace(/,/g,''))||0;
+   const commodity=(vals[3]||$('stackCommodity').value).toLowerCase();
+   const comm=commodity==='wheat'?'Wheat':commodity==='rice'?'Rice':'';
+   if(stack&&Number.isFinite(bags)&&bags>0&&Number.isFinite(qty)&&qty>=0&&comm)rows.push({stack,bags,qty,commodity:comm});
+  });
+  if(!rows.length){$('stackScanStatus').textContent='Valid data nahi mila. Format: Stack Number, Bags, Qty, Commodity. Commodity Wheat ya Rice honi chahiye.';return}
+  const entries=getEntries();
+  rows.forEach(r=>entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,9),date,stackNo:r.stack,commodity:r.commodity,bags:r.bags,qty:r.qty,alp:requiredALP(r.bags)}));
+  saveEntries(entries);$('pasteDataPanel').hidden=true;$('pasteStackData').value='';
+  $('stackScanStatus').textContent=`${rows.length} Stack entries successfully save ho gayi.`;renderStacks();
+ }
+ $('savePastedStacks').addEventListener('click',savePastedStacks);
 $('copyStacks').addEventListener('click',()=>{const entries=getEntries().filter(e=>!$('stackDateFilter').value||e.date===$('stackDateFilter').value);if(!entries.length){$('stackMessage').textContent='No stack details available for copying.';return;}const rows=[['Date','Stack Number','Commodity','Bags','Qty','ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,e.qty||0,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
 
 let deferredInstallPrompt=null;
