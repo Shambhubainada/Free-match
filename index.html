@@ -135,8 +135,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 </div>
 
 <section class="card stack-card">
-<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add stack entries and view date-wise fumigation details.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
-<button type="button" class="tab" id="toggleStackView" aria-expanded="false">View Fumigation Details</button>
+<div class="stack-heading" style="justify-content:flex-start"><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
 <div id="stackViewPanel" hidden>
 <div class="date-filter"><div><label for="stackDateFilter">Select Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="hideStackView">Hide Details</button><button type="button" class="tab" id="copyStacks">Copy</button></div>
 <div class="stack-table-wrap">
@@ -145,7 +144,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 <tbody id="stackRows"></tbody>
 </table>
 </div>
-<div id="stackSummary"></div></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
+<div id="stackSummary"></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p></div>
 </section>
 </div></section>
 <section id="delta" class="panel">
@@ -209,7 +208,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
    <div><label for="stackQty">Qty</label><input id="stackQty" type="number" min="0" step="any" placeholder="Enter qty"></div>
    <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
   </div>
-  <div class="stack-actions"><button type="button" class="tab active" id="addStack">Save Stack</button><button type="button" class="tab" id="cancelStack">Cancel</button></div>
+  <div class="stack-actions"><button type="button" class="tab active" id="addStack">Save Stack</button><button type="button" class="tab" id="cancelStack">Cancel</button><button type="button" class="tab" id="toggleStackView" aria-expanded="false">View Fumigation Details</button></div>
  </div>
 </div>
 <div class="footer">FCI Chemical Calculation · Shambhu Ta-II</div>
@@ -252,8 +251,8 @@ function renderStacks(){
  Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),qty:a.reduce((s,x)=>s+Number(x.qty||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),total=sum(list),tablets=Math.ceil(total.alp*1000/3-1e-10);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${total.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat Qty Total',fmt(ws.qty,3)],['Rice Qty Total',fmt(rs.qty,3)],['Total Qty',fmt(total.qty,3)],['Total Bags',fmt(total.bags,0)],['Total Chemical Used',fmt(total.alp,4)+' kg'],['Tablets Used (3 gm)',fmt(tablets,0)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
  $('stackMessage').textContent=!allEntries.length?'No stack details added.':(!detailsOpen?'Stack entries saved. Tap View Fumigation Details and select a date to view.':(!selectedDate?'Select a date to view that day’s fumigation details.':(entries.length?`${entries.length} stack(s) on ${selectedDate}.`:`No fumigation entries found for ${selectedDate}.`)));
 }
-function showStackDetails(){ $('stackViewPanel').hidden=false; $('toggleStackView').hidden=true; $('toggleStackView').setAttribute('aria-expanded','true'); renderStacks(); }
-function hideStackDetails(){ $('stackViewPanel').hidden=true; $('toggleStackView').hidden=false; $('toggleStackView').setAttribute('aria-expanded','false'); renderStacks(); }
+function showStackDetails(){ closeStackModal(); $('stackViewPanel').hidden=false; $('toggleStackView').setAttribute('aria-expanded','true'); renderStacks(); }
+function hideStackDetails(){ $('stackViewPanel').hidden=true; $('toggleStackView').setAttribute('aria-expanded','false'); renderStacks(); }
 $('toggleStackView').addEventListener('click',showStackDetails);$('hideStackView').addEventListener('click',hideStackDetails);
 $('stackDateFilter').addEventListener('change',renderStacks);
 $('addStack').addEventListener('click',addStackRow);
