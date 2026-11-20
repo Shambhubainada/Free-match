@@ -109,7 +109,7 @@ input{padding:7px 8px;border-radius:7px;font-size:14px;min-width:0}
 /* Stack details are modal-only; never render them in the ALP page card. */
 .stack-card #stackViewPanel,.stack-card .date-filter,.stack-card .stack-table-wrap,.stack-card #stackSummary,.stack-card #stackMessage{display:none!important}
 #stackModal:not(.open){display:none!important}
-.stack-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}.summary-box{background:#edf5f0;border-radius:7px;padding:5px}.summary-box small{display:block;color:#52665c;font-size:10px;font-weight:700}.summary-box strong{display:block;color:#123b32;font-size:14px;overflow-wrap:anywhere}.date-group{background:#e9f4ef;color:#123b32;font-weight:800;padding:5px 7px;margin-top:7px;border-radius:7px;font-size:11px}.date-filter{display:flex;align-items:end;gap:7px;margin:8px 0}.date-filter>div{flex:1;min-width:0}.date-filter button{white-space:nowrap}.stack-table th:nth-child(1),.stack-table td:nth-child(1){width:82px}.stack-table th:nth-child(2),.stack-table td:nth-child(2){width:62px}.stack-table th:nth-child(3),.stack-table td:nth-child(3){width:58px}.stack-table th:nth-child(4),.stack-table td:nth-child(4),.stack-table th:nth-child(5),.stack-table td:nth-child(5){width:52px}.stack-table th:nth-child(6),.stack-table td:nth-child(6){width:64px}.stack-table th:last-child,.stack-table td:last-child{width:30px}
+.stack-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}.summary-box{background:#edf5f0;border-radius:7px;padding:5px}.summary-box small{display:block;color:#52665c;font-size:10px;font-weight:700}.summary-box strong{display:block;color:#123b32;font-size:14px;overflow-wrap:anywhere}.date-group{background:#e9f4ef;color:#123b32;font-weight:800;padding:5px 7px;margin-top:7px;border-radius:7px;font-size:11px}.date-filter{display:flex;align-items:end;gap:7px;margin:4px 0 10px;padding:8px;background:#eaf5ef;border:1px solid #d2e8dc;border-radius:10px}.date-filter>div{flex:1;min-width:0}.date-filter button{white-space:nowrap}.stack-table{border-collapse:separate;border-spacing:0 4px;font-size:11px}.stack-table th{padding:6px 5px;background:#174d40;color:#fff}.stack-table td{padding:6px 5px!important;background:#f4f8f5;border-bottom:0}.stack-table tbody tr{box-shadow:0 1px 4px #123b3210}.stack-table tbody tr.wheat-row td{background:#fff7e6}.stack-table tbody tr.rice-row td{background:#eaf5ff}.stack-table tbody tr td:first-child{font-weight:800;color:#123b32;border-radius:7px 0 0 7px}.stack-table tbody tr td:last-child{border-radius:0 7px 7px 0}.stack-table .commodity-cell{font-weight:700}.stack-table .tablet-cell{font-weight:800;color:#176b4e;background:#dff5e9!important}.stack-table th:nth-child(1),.stack-table td:nth-child(1){min-width:54px}.stack-table th:nth-child(6),.stack-table td:nth-child(6){min-width:55px}.stack-table th:last-child,.stack-table td:last-child{width:34px}
 select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;font:inherit;font-size:14px;background:#fbfdfc;color:var(--ink)}
 @media(max-width:380px){.stack-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
 .head-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.install-app{display:flex;align-items:center;gap:8px;border:1px solid #ffffff55;background:#ffffff18;color:#fff;border-radius:11px;padding:6px 10px;font:700 11px system-ui;cursor:pointer;white-space:nowrap}.install-app img{width:42px;height:42px;border-radius:9px}.stack-heading{gap:6px}.stack-heading .tab{padding:5px 8px;font-size:11px}.stack-actions .tab{padding:5px 8px;font-size:11px}.stack-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}.stack-table td{white-space:nowrap}
@@ -222,7 +222,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
     <label for="pasteStackData">Paste Pest / Excel Data (required columns: Stack Number, Bags, Qty, Commodity)</label>
     <textarea id="pasteStackData" rows="5" placeholder="Stack Number&#9;Bags&#9;Qty&#9;Commodity&#9;Remarks&#10;1/15&#9;2000&#9;200&#9;Wheat&#9;extra text&#10;2/15&#9;1800&#9;180&#9;Rice&#9;ignore this" style="width:100%;border:1px solid #cddbd3;border-radius:9px;padding:9px;font:14px/1.4 system-ui;background:#fbfdfc;color:var(--ink)"></textarea>
     <div class="stack-actions"><button type="button" class="tab active" id="savePastedStacks">Save Pasted Stacks</button><button type="button" class="tab" id="cancelPasteData">Cancel</button></div>
-    <p class="stack-message">Header wali Excel/Pest table paste karein. App sirf Stack Number, Bags, Qty aur Commodity lega; Sr No., Date, Remarks, Rate, Total jaise extra columns ignore honge. Header na ho to columns isi order mein hone chahiye: Stack Number, Bags, Qty, Commodity.</p>
+    <p class="stack-message">Excel/Pest ki poori table paste karein. Stack Number, Bags, Commodity aur Qty ke heading kisi bhi column/sequence mein ho sakte hain. Sr No., Date, Remarks, Rate, Total aur baaki extra columns ignore honge.</p>
    </div>
    <p id="stackScanStatus" class="stack-message" aria-live="polite">Camera, Gallery ya Paste Data se multiple stacks add karein.</p><div id="stackScanPreview" hidden></div>
   </div>
@@ -230,7 +230,7 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 <div class="date-filter"><div><label for="stackDateFilter">Select Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="copyStacks">Copy</button></div>
 <div class="stack-table-wrap">
 <table class="stack-table">
-<thead><tr><th>Date</th><th>Stack</th><th>Commodity</th><th>Bags</th><th>Qty</th><th>ALP kg</th><th></th></tr></thead>
+<thead><tr><th>Stack</th><th>Commodity</th><th>Bags</th><th>Qty</th><th>ALP kg</th><th>Tablets</th><th>Action</th></tr></thead>
 <tbody id="stackRows"></tbody>
 </table>
 </div>
@@ -272,9 +272,9 @@ function addStackRow(){
 function renderStacks(){
  const allEntries=getEntries().sort((a,b)=>b.date.localeCompare(a.date)||String(a.stackNo).localeCompare(String(b.stackNo),undefined,{numeric:true}));
  const selectedDate=$('stackDateFilter').value;const detailsOpen=!$('stackViewPanel').hidden;const entries=(detailsOpen&&selectedDate)?allEntries.filter(e=>e.date===selectedDate):[];$('stackRows').innerHTML='';
- entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;[e.date,e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.qty||0),3),fmt(Number(e.alp),4)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='text-align:center';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.cssText='padding:2px 6px;font-size:12px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
+ entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;tr.className=e.commodity==='Wheat'?'wheat-row':'rice-row';const tablets=Math.ceil(Number(e.alp||0)*1000/3-1e-10);[e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.qty||0),3),fmt(Number(e.alp),4),fmt(tablets,0)].forEach((v,i)=>{const td=document.createElement('td');td.textContent=v;if(i===1)td.className='commodity-cell';if(i===5)td.className='tablet-cell';tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='text-align:center';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.cssText='padding:2px 6px;font-size:12px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
  const groups={};entries.forEach(e=>(groups[e.date]??=[]).push(e));const summary=$('stackSummary');summary.innerHTML='';
- Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),qty:a.reduce((s,x)=>s+Number(x.qty||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),total=sum(list),tablets=Math.ceil(total.alp*1000/3-1e-10);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${total.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat Qty Total',fmt(ws.qty,3)],['Rice Qty Total',fmt(rs.qty,3)],['Total Qty',fmt(total.qty,3)],['Total Bags',fmt(total.bags,0)],['Total Chemical Used',fmt(total.alp,4)+' kg'],['Tablets Used (3 gm)',fmt(tablets,0)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
+ Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),qty:a.reduce((s,x)=>s+Number(x.qty||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),total=sum(list),tablets=list.reduce((sum,x)=>sum+Math.ceil(Number(x.alp||0)*1000/3-1e-10),0);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${total.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat Qty Total',fmt(ws.qty,3)],['Rice Qty Total',fmt(rs.qty,3)],['Total Qty',fmt(total.qty,3)],['Total Bags',fmt(total.bags,0)],['Total Chemical Used',fmt(total.alp,4)+' kg'],['Tablets Used (3 gm)',fmt(tablets,0)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
  $('stackMessage').textContent=!allEntries.length?'No stack details added.':(!detailsOpen?'Stack entries saved. Open Stack Details tab and select a date to view.':(!selectedDate?'Select a date to view that day’s fumigation details.':(entries.length?`${entries.length} stack(s) on ${selectedDate}.`:`No fumigation entries found for ${selectedDate}.`)));
 }
 function showStackEntryTab(){ $('stackEntryPanel').hidden=false; $('stackViewPanel').hidden=true; $('addStackTab').classList.add('active'); $('stackDetailsTab').classList.remove('active'); $('addStackTab').setAttribute('aria-selected','true'); $('stackDetailsTab').setAttribute('aria-selected','false'); }
@@ -284,43 +284,74 @@ $('stackDateFilter').addEventListener('change',renderStacks);
 $('addStack').addEventListener('click',addStackRow);
  $('togglePasteData').addEventListener('click',()=>{$('pasteDataPanel').hidden=!$('pasteDataPanel').hidden;if(!$('pasteDataPanel').hidden)$('pasteStackData').focus()});
  $('cancelPasteData').addEventListener('click',()=>{$('pasteDataPanel').hidden=true;$('pasteStackData').value=''});
- function pasteKey(value){return String(value||'').toLowerCase().replace(/[^a-z0-9]/g,'')}
- function pasteColumnIndex(headers,aliases){return headers.findIndex(h=>aliases.includes(pasteKey(h)))}
+ function pasteKey(value){return String(value||'').toLowerCase().replace(/\u00a0/g,' ').replace(/[^a-z0-9]/g,'')}
+ function pasteSplitLine(line){
+  const s=String(line||'').trim();
+  if(s.includes('\t'))return s.split('\t');
+  if(s.includes('|'))return s.split('|');
+  if(s.includes(';'))return s.split(';');
+  if(s.includes(','))return s.split(',');
+  return s.split(/\s{2,}/);
+ }
+ function pasteColumnIndex(headers,aliases){return headers.findIndex(h=>{const key=pasteKey(h);return aliases.some(a=>key===a||key.startsWith(a)||key.includes(a))})}
  function savePastedStacks(){
   const date=$('stackDate').value,raw=$('pasteStackData').value.trim();
   if(!date){$('stackScanStatus').textContent='Pehle Fumigation Date select karein.';return}
   if(!raw){$('stackScanStatus').textContent='Pehle Pest / Excel data paste karein.';return}
   const lines=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
-  const splitLine=line=>line.includes('\t')?line.split('\t'):line.includes('|')?line.split('|'):line.split(',');
-  const first=splitLine(lines[0]).map(x=>x.trim().replace(/^['"]|['"]$/g,''));
-  const stackAliases=['stack','stackno','stacknumber','stk','stkno','stknumber'];
-  const bagAliases=['bag','bags','totalbags','nobags','numberofbags'];
-  const qtyAliases=['qty','quantity','totalqty','weight','netqty'];
-  const commodityAliases=['commodity','comm','crop','foodgrain','grain'];
-  let headerIndexes={stack:pasteColumnIndex(first,stackAliases),bags:pasteColumnIndex(first,bagAliases),qty:pasteColumnIndex(first,qtyAliases),commodity:pasteColumnIndex(first,commodityAliases)};
-  const hasHeader=headerIndexes.stack>=0&&headerIndexes.bags>=0;
-  const startAt=hasHeader?1:0;
-  if(hasHeader&&headerIndexes.qty<0)headerIndexes.qty=-1;
-  if(hasHeader&&headerIndexes.commodity<0)headerIndexes.commodity=-1;
+  const aliases={
+   stack:['stack','stackno','stacknumber','stacknum','stk','stkno','stknumber','stackid','lotno','lotnumber','godownstack','stackno.','stacknoof'],
+   bags:['bag','bags','totalbags','nobags','numberofbags','noofbags','bagno','bagnos','totalnoofbags','totalnumberofbags','bagsinstack','bagquantity','noofbag'],
+   qty:['qty','quantity','totalqty','weight','netqty','netquantity','quantitymt','qtymt','weightmt','netweight','totalweight','qtl','quintal'],
+   commodity:['commodity','comm','crop','foodgrain','grain','nameofcommodity','commodityname','item','product']
+  };
+  let headerLine=-1,headerIndexes=null,headerCols=[];
+  // Header can appear below report title/date/blank or other introductory rows.
+  for(let i=0;i<Math.min(lines.length,15);i++){
+   const cols=pasteSplitLine(lines[i]).map(x=>x.trim().replace(/^['"]|['"]$/g,''));
+   const idx={};Object.keys(aliases).forEach(k=>idx[k]=pasteColumnIndex(cols,aliases[k]));
+   if(idx.stack>=0&&idx.bags>=0&&idx.commodity>=0&&idx.qty>=0){headerLine=i;headerIndexes=idx;headerCols=cols;break}
+  }
+  const cleanNumber=value=>{
+   let x=String(value||'').replace(/,/g,'').replace(/[₹]/g,'').replace(/\b(mt|kg|qtl|quintal|bags?)\b/ig,'').trim();
+   const m=x.match(/-?\d+(?:\.\d+)?/);return m?Number(m[0]):NaN;
+  };
+  const cleanStack=value=>String(value||'').trim().replace(/^['"]|['"]$/g,'').replace(/\s+/g,'').replace(/^(?:stack|stk|no|number)[:#-]?/i,'');
+  const cleanCommodity=value=>{const t=String(value||'').toLowerCase();if(/\bwheat\b|गेहूं|गेंहू/.test(t))return 'Wheat';if(/\brice\b|धान|चावल/.test(t))return 'Rice';return ''};
   const rows=[];let skipped=0;
-  lines.slice(startAt).forEach(line=>{
-   const vals=splitLine(line).map(x=>x.trim().replace(/^['"]|['"]$/g,''));
-   let stack,bagsRaw,qtyRaw,commodityRaw;
-   if(hasHeader){stack=vals[headerIndexes.stack]||'';bagsRaw=vals[headerIndexes.bags]||'';qtyRaw=headerIndexes.qty>=0?(vals[headerIndexes.qty]||''):'0';commodityRaw=headerIndexes.commodity>=0?(vals[headerIndexes.commodity]||''):'';}
-   else {stack=vals[0]||'';bagsRaw=vals[1]||'';qtyRaw=vals[2]||'0';commodityRaw=vals[3]||'';}
-   const bags=Number(String(bagsRaw).replace(/,/g,''));
-   const qty=Number(String(qtyRaw||'0').replace(/,/g,''));
-   const commText=String(commodityRaw||$('stackCommodity').value).toLowerCase().trim();
-   const commodity=/^wheat\b/.test(commText)?'Wheat':(/^rice\b/.test(commText)?'Rice':'');
-   stack=String(stack).trim();
-   if(!stack||!Number.isFinite(bags)||bags<=0||!Number.isFinite(qty)||qty<0||!commodity){skipped++;return;}
-   rows.push({stack,bags,qty,commodity});
-  });
-  if(!rows.length){$('stackScanStatus').textContent='Koi valid Stack nahi mila. Header mein Stack Number aur Bags hone chahiye; Commodity Wheat/Rice honi chahiye.';return}
+  if(headerLine>=0){
+   // Header-driven extraction: the four needed fields may be in any column order.
+   for(let i=headerLine+1;i<lines.length;i++){
+    const vals=pasteSplitLine(lines[i]).map(x=>x.trim().replace(/^['"]|['"]$/g,''));
+    const stack=cleanStack(vals[headerIndexes.stack]);
+    const bags=cleanNumber(vals[headerIndexes.bags]);
+    const qty=headerIndexes.qty>=0?cleanNumber(vals[headerIndexes.qty]):0;
+    const commodity=headerIndexes.commodity>=0?cleanCommodity(vals[headerIndexes.commodity]):'';
+    if(!stack&&!Number.isFinite(bags)&&!commodity)continue;
+    if(!stack||!Number.isFinite(bags)||bags<=0||!commodity||!Number.isFinite(qty)||qty<0){skipped++;continue}
+    rows.push({stack,bags,qty,commodity});
+   }
+  }else{
+   // Header-less fallback: locate the stack pattern and commodity anywhere in each row;
+   // the largest numeric value is treated as Bags and the next as Qty.
+   for(const line of lines){
+    const cells=pasteSplitLine(line);const tokens=line.split(/[\t|;,\s]+/).filter(Boolean);
+    const stackToken=tokens.find(t=>/^[A-Za-z]?\d{1,4}\s*[/-]\s*\d{1,4}[A-Za-z]?$/i.test(t));
+    const commodity=cleanCommodity(line);
+    const nums=tokens.map(cleanNumber).filter(v=>Number.isFinite(v)&&v>0).sort((a,b)=>b-a);
+    if(!stackToken||!commodity||!nums.length)continue;
+    const stack=cleanStack(stackToken),bags=nums[0],qty=nums.length>1?nums[1]:0;
+    if(stack&&bags>0)rows.push({stack,bags,qty,commodity});else skipped++;
+   }
+  }
+  // Remove repeated header rows and duplicate data rows without touching valid distinct stacks.
+  const unique=[],seen=new Set();
+  rows.forEach(r=>{const key=[r.stack,r.bags,r.qty,r.commodity].join('|');if(!seen.has(key)){seen.add(key);unique.push(r)}else skipped++});
+  if(!unique.length){$('stackScanStatus').textContent='Valid data nahi mila. Pest Data ki poori table copy karein. Stack Number, Bags, Commodity aur Qty ke headings zaroor hon; unka sequence kuch bhi ho sakta hai.';return}
   const entries=getEntries();
-  rows.forEach(r=>entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,9),date,stackNo:r.stack,commodity:r.commodity,bags:r.bags,qty:r.qty,alp:requiredALP(r.bags)}));
+  unique.forEach(r=>entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,9),date,stackNo:r.stack,commodity:r.commodity,bags:r.bags,qty:r.qty,alp:requiredALP(r.bags)}));
   saveEntries(entries);$('pasteDataPanel').hidden=true;$('pasteStackData').value='';
-  $('stackScanStatus').textContent=`${rows.length} Stack save hue. ${skipped} extra/invalid row(s) skip ki gayi. Extra columns ignore kar diye gaye.`;renderStacks();
+  $('stackScanStatus').textContent=`${unique.length} Stack save hue. ${skipped} extra/invalid row(s) skip ki gayi. Sirf Stack Number, Bags, Commodity aur Qty liye gaye.`;renderStacks();
  }
  $('savePastedStacks').addEventListener('click',savePastedStacks);
 $('copyStacks').addEventListener('click',()=>{const entries=getEntries().filter(e=>!$('stackDateFilter').value||e.date===$('stackDateFilter').value);if(!entries.length){$('stackMessage').textContent='No stack details available for copying.';return;}const rows=[['Date','Stack Number','Commodity','Bags','Qty','ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,e.qty||0,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
