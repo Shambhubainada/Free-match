@@ -66,6 +66,44 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 .stack-table th{background:#e9f4ef;color:#123b32;padding:10px 9px;white-space:nowrap}
 .stack-message{font-size:12px;color:var(--muted);margin:9px 0 0}
 @media(max-width:620px){.stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Extra compact view: tighter spacing while keeping every field readable */
+body{font-size:13px;line-height:1.3}
+header{padding:10px 12px 12px}
+.eyebrow{font-size:10px;letter-spacing:1px}
+h1{font-size:clamp(19px,3.5vw,25px);margin:2px 0}
+.sub{font-size:12px}
+main{margin:8px auto;padding:0 8px 16px}
+.tabs{gap:5px;padding:2px 0 7px}
+.tab{padding:6px 9px;border-radius:8px;font-size:12px}
+.card{padding:10px;border-radius:11px;margin-bottom:8px}
+.card h2{font-size:15px;margin-bottom:3px}
+.hint{font-size:11px;margin-bottom:8px}
+.grid{gap:7px}
+label{font-size:10px;margin-bottom:3px}
+input{padding:7px 8px;border-radius:7px;font-size:14px;min-width:0}
+.results{gap:6px;margin-top:9px}
+.result{padding:7px 8px;border-radius:9px}
+.result small{font-size:10px}
+.result strong{font-size:clamp(16px,3vw,21px);margin-top:0}
+.result em{font-size:10px}
+.formula{font-size:10px;margin-top:7px;padding-top:7px}
+.note{padding:7px 9px;font-size:11px;margin-bottom:7px}
+.stack-grid{gap:6px}
+.stack-actions{gap:6px;margin-top:8px}
+.stack-table-wrap{margin-top:8px}
+.stack-table{font-size:11px;min-width:590px}
+.stack-table th{padding:6px 7px}
+.stack-message{font-size:10px;margin-top:6px}
+.footer{font-size:10px;padding:6px}
+@media(max-width:620px){header{padding:9px 10px}main{padding-left:7px;padding-right:7px}.card{padding:9px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}.stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:380px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.stack-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.stack-heading .hint{margin:3px 0 0}
+.modal-backdrop{display:none;position:fixed;inset:0;background:#10251fcc;z-index:1000;align-items:center;justify-content:center;padding:14px}.modal-backdrop.open{display:flex}.stack-modal{width:min(100%,480px);background:#fff;border-radius:16px;padding:15px;box-shadow:0 18px 60px #0004}.modal-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.modal-title h2{margin:0;font-size:17px}.modal-close{border:0;background:#edf3ef;color:#123b32;border-radius:9px;width:32px;height:32px;font-size:23px;line-height:1;cursor:pointer}.commodity-tabs{display:flex;gap:7px;margin-bottom:13px}.commodity-tabs .tab{flex:1}.modal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modal-grid>div:last-child{grid-column:1/-1}
+.stack-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.summary-box{background:#edf5f0;border-radius:9px;padding:8px}.summary-box small{display:block;color:#52665c;font-size:10px;font-weight:700}.summary-box strong{display:block;color:#123b32;font-size:16px;overflow-wrap:anywhere}.date-group{background:#e9f4ef;color:#123b32;font-weight:800;padding:8px;margin-top:10px;border-radius:8px;font-size:12px}
+select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;font:inherit;font-size:14px;background:#fbfdfc;color:var(--ink)}
+@media(max-width:380px){.stack-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
 </style>
 </head>
 <body>
@@ -143,27 +181,29 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 </div></section>
 
 <section class="card stack-card">
-<h2>Add Stack</h2>
-<p class="hint">Enter stack details and add them to the list below.</p>
-<div class="stack-grid">
-  <div><label for="stackNo">Stack Number</label><input id="stackNo" type="text" placeholder="Stack number"></div>
-  <div><label for="stackCommodity">Commodity</label><input id="stackCommodity" type="text" placeholder="Wheat / Rice"></div>
-  <div><label for="stackQty">Qty</label><input id="stackQty" type="number" min="0" step="any" placeholder="Quantity"></div>
-  <div><label for="stackBags">Bags</label><input id="stackBags" type="number" min="0" step="1" placeholder="Bags"></div>
-  <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
-</div>
-<div class="stack-actions">
-  <button type="button" class="tab active" id="addStack">+ Add Stack</button>
-  <button type="button" class="tab" id="copyStacks">Copy Details</button>
-</div>
+<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add and view stack entries.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
+<div class="stack-actions"><button type="button" class="tab" id="copyStacks">Copy Details</button></div>
 <div class="stack-table-wrap">
 <table class="stack-table">
-<thead><tr><th>Stack Number</th><th>Commodity</th><th>Qty</th><th>Bags</th><th>Required ALP (kg)</th><th>Action</th></tr></thead>
+<thead><tr><th>Date</th><th>Stack Number</th><th>Commodity</th><th>Qty (Bags)</th><th>Required ALP (kg)</th><th>Action</th></tr></thead>
 <tbody id="stackRows"></tbody>
 </table>
 </div>
-<p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
+<div id="stackSummary"></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
 </section>
+<div class="modal-backdrop" id="stackModal" aria-hidden="true">
+ <div class="stack-modal" role="dialog" aria-modal="true" aria-labelledby="stackModalTitle">
+  <div class="modal-title"><h2 id="stackModalTitle">Add Stack Entry</h2><button type="button" class="modal-close" id="closeStack" aria-label="Close">×</button></div>
+  <div class="stack-grid modal-grid">
+   <div><label for="stackDate">Fumigation Date</label><input id="stackDate" type="date"></div>
+   <div><label for="stackCommodity">Commodity</label><select id="stackCommodity"><option value="Wheat">Wheat</option><option value="Rice">Rice</option></select></div>
+   <div><label for="stackNo">Stack Number</label><input id="stackNo" type="text" placeholder="Stack number"></div>
+   <div><label for="stackBags">Bags / Qty</label><input id="stackBags" type="number" min="0" step="1" placeholder="Enter bags"></div>
+   <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
+  </div>
+  <div class="stack-actions"><button type="button" class="tab active" id="addStack">Save Stack</button><button type="button" class="tab" id="cancelStack">Cancel</button></div>
+ </div>
+</div>
 <div class="footer">FCI Chemical Calculation · Shambhu Ta-II</div>
 </main>
 <script>
@@ -177,37 +217,37 @@ function calcMal(){let b=n('malBags'),l=n('malL'),w=n('malW'),h=b*.00125,a=(2*h*
 function calcAir(){let b=n('airBags'),l=n('airL'),w=n('airW'),h=b*.00125,vol=l*w*h,sol=vol/270;put('airH',h,4);put('airVol',vol,3);put('airSol',sol,4);put('airQty',sol*.01,5)}
 const calculators={alp:calcALP,delta:calcDelta,malstack:calcMal,aerial:calcAir};
 document.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{let p=el.id.startsWith('alp')?'alp':el.id.startsWith('del')?'delta':el.id.startsWith('mal')?'malstack':'aerial';calculators[p]();if(el.id==='alpL'||el.id==='alpW'||el.id==='stackBags')updateStackALP()}));
-document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===btn.dataset.tab))}));
+document.querySelectorAll('.tab[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab[data-tab]').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===btn.dataset.tab))}));
 
-// Stack details
-const stackFields=['stackNo','stackCommodity','stackQty','stackBags','stackChemical'];
+// Date-wise stack details, commodity selector and automatic totals
+const STACK_KEY='fciChemicalStackEntries_v2';
 function requiredALP(bags){const h=Math.ceil((Math.max(0,Number(bags)||0)*.00125)*100-1e-10)/100;return n('alpL')*n('alpW')*h*.00675}
 function updateStackALP(){const bags=n('stackBags');$('stackChemical').value=bags?fmt(requiredALP(bags),4):''}
 $('stackBags').addEventListener('input',updateStackALP);
+function todayLocal(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function openStackModal(){$('stackDate').value=todayLocal();$('stackModal').classList.add('open');$('stackModal').setAttribute('aria-hidden','false');$('stackNo').focus()}
+function closeStackModal(){$('stackModal').classList.remove('open');$('stackModal').setAttribute('aria-hidden','true')}
+$('openStack').addEventListener('click',openStackModal);$('closeStack').addEventListener('click',closeStackModal);$('cancelStack').addEventListener('click',closeStackModal);
+$('stackModal').addEventListener('click',e=>{if(e.target===$('stackModal'))closeStackModal()});
+function getEntries(){try{return JSON.parse(localStorage.getItem(STACK_KEY)||'[]')}catch(e){return []}}
+function saveEntries(entries){localStorage.setItem(STACK_KEY,JSON.stringify(entries))}
 function addStackRow(){
-  updateStackALP();
-  const vals=stackFields.map(id=>$(id).value.trim());
-  if(!vals.some(Boolean)){ $('stackMessage').textContent='Please enter stack details first.'; return; }
-  const tr=document.createElement('tr');
-  vals.forEach(v=>{const td=document.createElement('td');td.textContent=v||'—';td.style.cssText='padding:9px;border-bottom:1px solid #dce6e0';tr.appendChild(td);});
-  const action=document.createElement('td');action.style.cssText='padding:9px;text-align:center;border-bottom:1px solid #dce6e0';
-  const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.padding='4px 10px';del.addEventListener('click',()=>{tr.remove();updateStackMessage();});action.appendChild(del);tr.appendChild(action);
-  $('stackRows').appendChild(tr);
-  stackFields.forEach(id=>$(id).value='');
-  updateStackALP();
-  updateStackMessage();
+ updateStackALP();const date=$('stackDate').value,stackNo=$('stackNo').value.trim(),commodity=$('stackCommodity').value,bags=Number($('stackBags').value),alp=requiredALP(bags);
+ if(!date||!stackNo||!Number.isFinite(bags)||bags<=0){$('stackMessage').textContent='Please enter Date, Stack Number and valid Bags.';return;}
+ const entries=getEntries();entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),date,stackNo,commodity,bags,alp});saveEntries(entries);renderStacks();$('stackNo').value='';$('stackBags').value='';$('stackChemical').value='';closeStackModal();$('stackMessage').textContent='Stack entry saved date-wise.';
 }
-function updateStackMessage(){const count=$('stackRows').children.length;$('stackMessage').textContent=count?count+' stack detail(s) added.':'No stack details added.';}
+function renderStacks(){
+ const entries=getEntries().sort((a,b)=>b.date.localeCompare(a.date)||String(a.stackNo).localeCompare(String(b.stackNo),undefined,{numeric:true}));$('stackRows').innerHTML='';
+ entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;[e.date,e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.alp),4)].forEach(v=>{const td=document.createElement('td');td.textContent=v;td.style.cssText='padding:8px;border-bottom:1px solid #dce6e0;white-space:nowrap';tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='padding:7px;text-align:center;border-bottom:1px solid #dce6e0';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.padding='4px 10px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
+ const groups={};entries.forEach(e=>(groups[e.date]??=[]).push(e));const summary=$('stackSummary');summary.innerHTML='';
+ Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),all=sum(list);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${all.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat · Bags',fmt(ws.bags,0)],['Wheat · ALP (kg)',fmt(ws.alp,4)],['Rice · Bags',fmt(rs.bags,0)],['Rice · ALP (kg)',fmt(rs.alp,4)],['Total · Bags',fmt(all.bags,0)],['Total · ALP (kg)',fmt(all.alp,4)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
+ $('stackMessage').textContent=entries.length?`${entries.length} stack detail(s) saved. Date-wise totals shown below.`:'No stack details added.';
+}
 $('addStack').addEventListener('click',addStackRow);
-$('copyStacks').addEventListener('click',()=>{
-  const rows=[['Stack Number','Commodity','Qty','Bags','Required ALP (kg)'],...Array.from($('stackRows').children).map(tr=>Array.from(tr.children).slice(0,5).map(td=>td.textContent))];
-  if(rows.length===1){$('stackMessage').textContent='Add at least one stack before copying.';return;}
-  const text=rows.map(r=>r.join('\t')).join('\n');
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.');}
-  else{$('stackMessage').textContent='Copy not available in this browser.';}
-});
+$('copyStacks').addEventListener('click',()=>{const entries=getEntries();if(!entries.length){$('stackMessage').textContent='Add at least one stack before copying.';return;}const rows=[['Date','Stack Number','Commodity','Qty (Bags)','Required ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
 
 Object.values(calculators).forEach(fn=>fn());
 updateStackALP();
+renderStacks();
 </script>
 </body></html>
