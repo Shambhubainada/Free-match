@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#123b32">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="chemical-192.png">
 <title>Chemical Dosage Calculator</title>
 <style>
 :root{--green:#123b32;--green2:#1e6654;--mint:#e9f4ef;--ink:#17251f;--muted:#65746d;--line:#dce6e0;--bg:#f4f7f5;--white:#fff;--gold:#f1b84b}
@@ -62,8 +64,8 @@ input{padding:9px 10px;border-radius:9px;font-size:15px}
 .stack-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
 .stack-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .stack-table-wrap{overflow-x:auto;margin-top:12px}
-.stack-table{width:100%;border-collapse:collapse;min-width:680px;text-align:left;font-size:13px}
-.stack-table th{background:#e9f4ef;color:#123b32;padding:10px 9px;white-space:nowrap}
+.stack-table{width:100%;border-collapse:collapse;min-width:0;table-layout:auto;text-align:left;font-size:12px}
+.stack-table th{background:#e9f4ef;color:#123b32;padding:6px 5px;white-space:nowrap}.stack-table td{padding:5px 4px!important;border-bottom:1px solid #dce6e0;white-space:nowrap}
 .stack-message{font-size:12px;color:var(--muted);margin:9px 0 0}
 @media(max-width:620px){.stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
@@ -92,8 +94,8 @@ input{padding:7px 8px;border-radius:7px;font-size:14px;min-width:0}
 .stack-grid{gap:6px}
 .stack-actions{gap:6px;margin-top:8px}
 .stack-table-wrap{margin-top:8px}
-.stack-table{font-size:11px;min-width:590px}
-.stack-table th{padding:6px 7px}
+.stack-table{font-size:10px;min-width:0;table-layout:auto}
+.stack-table th{padding:4px 3px;white-space:nowrap}.stack-table td{padding:4px 3px!important;white-space:nowrap}
 .stack-message{font-size:10px;margin-top:6px}
 .footer{font-size:10px;padding:6px}
 @media(max-width:620px){header{padding:9px 10px}main{padding-left:7px;padding-right:7px}.card{padding:9px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.results{grid-template-columns:repeat(2,minmax(0,1fr))}.stack-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -101,13 +103,15 @@ input{padding:7px 8px;border-radius:7px;font-size:14px;min-width:0}
 
 .stack-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.stack-heading .hint{margin:3px 0 0}
 .modal-backdrop{display:none;position:fixed;inset:0;background:#10251fcc;z-index:1000;align-items:center;justify-content:center;padding:14px}.modal-backdrop.open{display:flex}.stack-modal{width:min(100%,480px);background:#fff;border-radius:16px;padding:15px;box-shadow:0 18px 60px #0004}.modal-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.modal-title h2{margin:0;font-size:17px}.modal-close{border:0;background:#edf3ef;color:#123b32;border-radius:9px;width:32px;height:32px;font-size:23px;line-height:1;cursor:pointer}.commodity-tabs{display:flex;gap:7px;margin-bottom:13px}.commodity-tabs .tab{flex:1}.modal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modal-grid>div:last-child{grid-column:1/-1}
-.stack-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.summary-box{background:#edf5f0;border-radius:9px;padding:8px}.summary-box small{display:block;color:#52665c;font-size:10px;font-weight:700}.summary-box strong{display:block;color:#123b32;font-size:16px;overflow-wrap:anywhere}.date-group{background:#e9f4ef;color:#123b32;font-weight:800;padding:8px;margin-top:10px;border-radius:8px;font-size:12px}
+.stack-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:6px}.summary-box{background:#edf5f0;border-radius:7px;padding:5px}.summary-box small{display:block;color:#52665c;font-size:10px;font-weight:700}.summary-box strong{display:block;color:#123b32;font-size:14px;overflow-wrap:anywhere}.date-group{background:#e9f4ef;color:#123b32;font-weight:800;padding:5px 7px;margin-top:7px;border-radius:7px;font-size:11px}.date-filter{display:flex;align-items:end;gap:7px;margin:8px 0}.date-filter>div{flex:1;min-width:0}.date-filter button{white-space:nowrap}.stack-table th:nth-child(1),.stack-table td:nth-child(1){width:82px}.stack-table th:nth-child(2),.stack-table td:nth-child(2){width:62px}.stack-table th:nth-child(3),.stack-table td:nth-child(3){width:58px}.stack-table th:nth-child(4),.stack-table td:nth-child(4),.stack-table th:nth-child(5),.stack-table td:nth-child(5){width:52px}.stack-table th:nth-child(6),.stack-table td:nth-child(6){width:64px}.stack-table th:last-child,.stack-table td:last-child{width:30px}
 select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;font:inherit;font-size:14px;background:#fbfdfc;color:var(--ink)}
 @media(max-width:380px){.stack-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+.head-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.install-app{display:flex;align-items:center;gap:8px;border:1px solid #ffffff55;background:#ffffff18;color:#fff;border-radius:11px;padding:6px 10px;font:700 11px system-ui;cursor:pointer;white-space:nowrap}.install-app img{width:42px;height:42px;border-radius:9px}.stack-heading{gap:6px}.stack-heading .tab{padding:5px 8px;font-size:11px}.stack-actions .tab{padding:5px 8px;font-size:11px}.stack-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}.stack-table td{white-space:nowrap}
+@media(max-width:380px){.install-app{padding:4px 6px;gap:5px}.install-app img{width:36px;height:36px}.install-app span{font-size:10px}}
 </style>
 </head>
 <body>
-<header><div class="head"><div class="eyebrow">FCI</div><h1>FCI Chemical Calculation</h1><p class="sub">Shambhu Ta-II</p></div></header>
+<header><div class="head head-row"><div><div class="eyebrow">FCI</div><h1>FCI Chemical Calculation</h1><p class="sub">Shambhu Ta-II</p></div><button type="button" id="installApp" class="install-app" aria-label="Create app shortcut"><img src="chemical-192.png" alt="Chemical app icon"><span>Create Shortcut</span></button></div></header>
 <main>
 <div class="tabs" role="tablist">
 <button class="tab active" data-tab="alp">ALP Dosage</button>
@@ -130,6 +134,17 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 <div class="result"><small>Stack volume</small><strong id="alpVol">—</strong><em>cubic metre</em></div>
 </div>
 
+<section class="card stack-card">
+<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add and view stack entries.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
+<div class="date-filter"><div><label for="stackDateFilter">View Fumigation Date</label><input id="stackDateFilter" type="date"></div><button type="button" class="tab" id="clearDateFilter">All Dates</button><button type="button" class="tab" id="copyStacks">Copy</button></div>
+<div class="stack-table-wrap">
+<table class="stack-table">
+<thead><tr><th>Date</th><th>Stack</th><th>Commodity</th><th>Bags</th><th>Qty</th><th>ALP kg</th><th></th></tr></thead>
+<tbody id="stackRows"></tbody>
+</table>
+</div>
+<div id="stackSummary"></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
+</section>
 </div></section>
 <section id="delta" class="panel">
 <div class="card">
@@ -180,25 +195,16 @@ select{width:100%;border:1px solid #cddbd3;border-radius:7px;padding:7px 8px;fon
 
 </div></section>
 
-<section class="card stack-card">
-<div class="stack-heading"><div><h2>Stack Details</h2><p class="hint">Add and view stack entries.</p></div><button type="button" class="tab active" id="openStack">+ Add Stack</button></div>
-<div class="stack-actions"><button type="button" class="tab" id="copyStacks">Copy Details</button></div>
-<div class="stack-table-wrap">
-<table class="stack-table">
-<thead><tr><th>Date</th><th>Stack Number</th><th>Commodity</th><th>Qty (Bags)</th><th>Required ALP (kg)</th><th>Action</th></tr></thead>
-<tbody id="stackRows"></tbody>
-</table>
-</div>
-<div id="stackSummary"></div><p id="stackMessage" class="stack-message" aria-live="polite">No stack details added.</p>
-</section>
+
 <div class="modal-backdrop" id="stackModal" aria-hidden="true">
  <div class="stack-modal" role="dialog" aria-modal="true" aria-labelledby="stackModalTitle">
   <div class="modal-title"><h2 id="stackModalTitle">Add Stack Entry</h2><button type="button" class="modal-close" id="closeStack" aria-label="Close">×</button></div>
   <div class="stack-grid modal-grid">
-   <div><label for="stackDate">Fumigation Date</label><input id="stackDate" type="date"></div>
+   <div><label for="stackDate">Fumigation Date</label><input id="stackDate" type="date" required></div>
    <div><label for="stackCommodity">Commodity</label><select id="stackCommodity"><option value="Wheat">Wheat</option><option value="Rice">Rice</option></select></div>
    <div><label for="stackNo">Stack Number</label><input id="stackNo" type="text" placeholder="Stack number"></div>
-   <div><label for="stackBags">Bags / Qty</label><input id="stackBags" type="number" min="0" step="1" placeholder="Enter bags"></div>
+   <div><label for="stackBags">Bags (Mandatory)</label><input id="stackBags" type="number" min="1" step="1" placeholder="Enter bags" required></div>
+   <div><label for="stackQty">Qty</label><input id="stackQty" type="number" min="0" step="any" placeholder="Enter qty"></div>
    <div><label for="stackChemical">Required ALP (kg)</label><input id="stackChemical" type="text" placeholder="Auto calculated" readonly></div>
   </div>
   <div class="stack-actions"><button type="button" class="tab active" id="addStack">Save Stack</button><button type="button" class="tab" id="cancelStack">Cancel</button></div>
@@ -219,7 +225,7 @@ const calculators={alp:calcALP,delta:calcDelta,malstack:calcMal,aerial:calcAir};
 document.querySelectorAll('input').forEach(el=>el.addEventListener('input',()=>{let p=el.id.startsWith('alp')?'alp':el.id.startsWith('del')?'delta':el.id.startsWith('mal')?'malstack':'aerial';calculators[p]();if(el.id==='alpL'||el.id==='alpW'||el.id==='stackBags')updateStackALP()}));
 document.querySelectorAll('.tab[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab[data-tab]').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===btn.dataset.tab))}));
 
-// Date-wise stack details, commodity selector and automatic totals
+// Date-wise stack details, separate Bags and Qty, totals and tablet calculation
 const STACK_KEY='fciChemicalStackEntries_v2';
 function requiredALP(bags){const h=Math.ceil((Math.max(0,Number(bags)||0)*.00125)*100-1e-10)/100;return n('alpL')*n('alpW')*h*.00675}
 function updateStackALP(){const bags=n('stackBags');$('stackChemical').value=bags?fmt(requiredALP(bags),4):''}
@@ -232,20 +238,26 @@ $('stackModal').addEventListener('click',e=>{if(e.target===$('stackModal'))close
 function getEntries(){try{return JSON.parse(localStorage.getItem(STACK_KEY)||'[]')}catch(e){return []}}
 function saveEntries(entries){localStorage.setItem(STACK_KEY,JSON.stringify(entries))}
 function addStackRow(){
- updateStackALP();const date=$('stackDate').value,stackNo=$('stackNo').value.trim(),commodity=$('stackCommodity').value,bags=Number($('stackBags').value),alp=requiredALP(bags);
- if(!date||!stackNo||!Number.isFinite(bags)||bags<=0){$('stackMessage').textContent='Please enter Date, Stack Number and valid Bags.';return;}
- const entries=getEntries();entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),date,stackNo,commodity,bags,alp});saveEntries(entries);renderStacks();$('stackNo').value='';$('stackBags').value='';$('stackChemical').value='';closeStackModal();$('stackMessage').textContent='Stack entry saved date-wise.';
+ updateStackALP();const date=$('stackDate').value,stackNo=$('stackNo').value.trim(),commodity=$('stackCommodity').value,bags=Number($('stackBags').value),qty=Math.max(0,Number($('stackQty').value)||0),alp=requiredALP(bags);
+ if(!date||!stackNo||$('stackBags').value.trim()===''||!Number.isFinite(bags)||bags<=0){$('stackMessage').textContent='Date, Stack Number and Bags are mandatory. Please enter valid Bags.';return;}
+ const entries=getEntries();entries.push({id:Date.now()+'_'+Math.random().toString(36).slice(2,7),date,stackNo,commodity,bags,qty,alp});saveEntries(entries);renderStacks();$('stackNo').value='';$('stackBags').value='';$('stackQty').value='';$('stackChemical').value='';closeStackModal();$('stackMessage').textContent='Stack entry saved date-wise.';
 }
 function renderStacks(){
- const entries=getEntries().sort((a,b)=>b.date.localeCompare(a.date)||String(a.stackNo).localeCompare(String(b.stackNo),undefined,{numeric:true}));$('stackRows').innerHTML='';
- entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;[e.date,e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.alp),4)].forEach(v=>{const td=document.createElement('td');td.textContent=v;td.style.cssText='padding:8px;border-bottom:1px solid #dce6e0;white-space:nowrap';tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='padding:7px;text-align:center;border-bottom:1px solid #dce6e0';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.padding='4px 10px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
+ const allEntries=getEntries().sort((a,b)=>b.date.localeCompare(a.date)||String(a.stackNo).localeCompare(String(b.stackNo),undefined,{numeric:true}));
+ const selectedDate=$('stackDateFilter').value;const entries=selectedDate?allEntries.filter(e=>e.date===selectedDate):allEntries;$('stackRows').innerHTML='';
+ entries.forEach(e=>{const tr=document.createElement('tr');tr.dataset.id=e.id;[e.date,e.stackNo,e.commodity,fmt(Number(e.bags),0),fmt(Number(e.qty||0),3),fmt(Number(e.alp),4)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});const action=document.createElement('td');action.style.cssText='text-align:center';const del=document.createElement('button');del.type='button';del.textContent='×';del.title='Delete row';del.className='tab';del.style.cssText='padding:2px 6px;font-size:12px';del.addEventListener('click',()=>{saveEntries(getEntries().filter(x=>x.id!==e.id));renderStacks()});action.appendChild(del);tr.appendChild(action);$('stackRows').appendChild(tr)});
  const groups={};entries.forEach(e=>(groups[e.date]??=[]).push(e));const summary=$('stackSummary');summary.innerHTML='';
- Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),all=sum(list);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${all.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat · Bags',fmt(ws.bags,0)],['Wheat · ALP (kg)',fmt(ws.alp,4)],['Rice · Bags',fmt(rs.bags,0)],['Rice · ALP (kg)',fmt(rs.alp,4)],['Total · Bags',fmt(all.bags,0)],['Total · ALP (kg)',fmt(all.alp,4)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
- $('stackMessage').textContent=entries.length?`${entries.length} stack detail(s) saved. Date-wise totals shown below.`:'No stack details added.';
+ Object.keys(groups).sort().reverse().forEach(date=>{const list=groups[date],w=list.filter(x=>x.commodity==='Wheat'),r=list.filter(x=>x.commodity==='Rice'),sum=a=>({count:a.length,bags:a.reduce((s,x)=>s+Number(x.bags||0),0),qty:a.reduce((s,x)=>s+Number(x.qty||0),0),alp:a.reduce((s,x)=>s+Number(x.alp||0),0)}),ws=sum(w),rs=sum(r),total=sum(list),tablets=Math.ceil(total.alp*1000/3-1e-10);const heading=document.createElement('div');heading.className='date-group';heading.textContent=`${date} · ${total.count} Stack fumigated`;summary.appendChild(heading);const grid=document.createElement('div');grid.className='stack-summary';[['Wheat Qty Total',fmt(ws.qty,3)],['Rice Qty Total',fmt(rs.qty,3)],['Total Qty',fmt(total.qty,3)],['Total Bags',fmt(total.bags,0)],['Total Chemical Used',fmt(total.alp,4)+' kg'],['Tablets Used (3 gm)',fmt(tablets,0)]].forEach(([label,value])=>{const box=document.createElement('div');box.className='summary-box';const small=document.createElement('small');small.textContent=label;const strong=document.createElement('strong');strong.textContent=value;box.append(small,strong);grid.appendChild(box)});summary.appendChild(grid)});
+ $('stackMessage').textContent=allEntries.length?(selectedDate?`${entries.length} stack(s) on ${selectedDate}.`:`${allEntries.length} stack detail(s) saved. Select a date to view that day's fumigation.`):'No stack details added.';
 }
+$('stackDateFilter').addEventListener('change',renderStacks);$('clearDateFilter').addEventListener('click',()=>{$('stackDateFilter').value='';renderStacks()});
 $('addStack').addEventListener('click',addStackRow);
-$('copyStacks').addEventListener('click',()=>{const entries=getEntries();if(!entries.length){$('stackMessage').textContent='Add at least one stack before copying.';return;}const rows=[['Date','Stack Number','Commodity','Qty (Bags)','Required ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
+$('copyStacks').addEventListener('click',()=>{const entries=getEntries().filter(e=>!$('stackDateFilter').value||e.date===$('stackDateFilter').value);if(!entries.length){$('stackMessage').textContent='No stack details available for copying.';return;}const rows=[['Date','Stack Number','Commodity','Bags','Qty','ALP (kg)'],...entries.map(e=>[e.date,e.stackNo,e.commodity,e.bags,e.qty||0,fmt(e.alp,4)])];const txt=rows.map(r=>r.join('\t')).join('\n');if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(()=>$('stackMessage').textContent='Stack details copied.').catch(()=>$('stackMessage').textContent='Copy not available in this browser.')}else $('stackMessage').textContent='Copy not available in this browser.';});
 
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('installApp').querySelector('span').textContent='Create Shortcut'});
+$('installApp').addEventListener('click',async()=>{if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;}else{alert('Chrome me shortcut banane ke liye: upar ⋮ menu kholen → Add to Home screen / Install app → Add.');}});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 Object.values(calculators).forEach(fn=>fn());
 updateStackALP();
 renderStacks();
